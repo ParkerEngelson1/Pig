@@ -25,14 +25,12 @@ struct ContentView: View {
                         .frame(width: 150, height: 150)
                         .rotationEffect(.degrees(rotation))
                         .rotation3DEffect(.degrees(rotation), axis: (x: 1, y: 1, z: 0))
-                    
                     CustomText(text: "Turn Score: \(turnScore)")
                     HStack{
                         Button("Roll") {
                             chooseRandom(times: 3)
                             withAnimation(.interpolatingSpring(stiffness: 10, damping: 2)){
                                 rotation += 360
-                                
                             }
                         }
                         .buttonStyle(CustomButtonStyle())
@@ -44,12 +42,9 @@ struct ContentView: View {
                             }
                             if gameScore >= 100 {
                                 gameOver = true
-                                
                             }
                         }
-                        
                         .buttonStyle(CustomButtonStyle())
-                        
                     }
                     CustomText(text: "Game Score: \(gameScore)")
                     NavigationLink("How to Play", destination: InstructionsView())
@@ -74,11 +69,13 @@ struct ContentView: View {
             })
         }
     }
+    
     func endTurn()
     {
         turnScore = 0
         randomValue = 0
     }
+    
     func chooseRandom(times: Int) {
         if times > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -105,6 +102,7 @@ struct CustomText: View {
         Text(text).font(Font.custom("Marker Felt", size: 36))
     }
 }
+
 struct CustomButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -116,6 +114,7 @@ struct CustomButtonStyle: ButtonStyle {
             .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
+
 struct InstructionsView: View {
     var body: some View {
         ZStack {

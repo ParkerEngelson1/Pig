@@ -26,12 +26,20 @@ struct ContentView: View {
                 
                 CustomText(text: "Turn Score: \(turnScore)")
                 HStack{
-                    Button("Roll"){
-                        
+                    Button("Roll") {
+                        chooseRandom(times: 3)
+                        withAnimation(.interpolatingSpring(stiffness: 10, damping: 2)){
+                            rotation += 360
+                            
+                        }
                     }
                     .buttonStyle(CustomButtonStyle())
                     Button("Hold"){
-                        
+                        gameScore += turnScore
+                        endTurn()
+                        withAnimation(.easeInOut(duration: 1)){
+                            rotation += 360
+                        }
                     }
                     .buttonStyle(CustomButtonStyle())
                 }
@@ -42,7 +50,31 @@ struct ContentView: View {
             .padding()
         }
     }
+    func endTurn()
+    {
+        turnScore = 0
+        randomValue = 0
+    }
+    func chooseRandom(times: Int) {
+        if times > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                randomValue = Int.random(in: 1...6)
+                chooseRandom(times: times - 1)
+            }
+        }
+        if times == 0 {
+            if randomValue == 1 {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1){
+                    endTurn()
+                }
+            }
+            else {
+                turnScore += randomValue
+            }
+        }
+    }
 }
+
 struct CustomText: View {
     let text: String
     var body: some View {
